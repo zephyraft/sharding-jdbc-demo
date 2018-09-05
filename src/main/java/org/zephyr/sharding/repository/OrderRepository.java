@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 public interface OrderRepository {
 
-    Long insert(Order model);
+    void insert(Order model);
 
     List<Order> selectFirstPage();
+
+    void deleteById(Long orderId);
 }

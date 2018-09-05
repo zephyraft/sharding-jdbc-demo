@@ -3,6 +3,7 @@ package org.zephyr.sharding.common;
 /**
  * Created by zephyr on 2018/9/5.
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class DataResult {
     private int code;
 

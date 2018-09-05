@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--suppress SqlNoDataSourceInspection -->
+<!--suppress SqlResolve, SqlNoDataSourceInspection -->
 <mapper namespace="org.zephyr.sharding.repository.OrderItemRepository">
     <resultMap id="baseResultMap" type="org.zephyr.sharding.entity.OrderItem">
         <result column="order_item_id" property="orderItemId" jdbcType="INTEGER"/>

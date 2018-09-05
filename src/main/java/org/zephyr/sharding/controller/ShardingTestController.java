@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zephyr.sharding.common.DataResult;
@@ -35,9 +36,20 @@ public class ShardingTestController {
 
     private static final int THREAD_NUM = 200;
 
+    @GetMapping("echo/{string}")
+    public DataResult echo(@PathVariable String string) {
+        return new SuccessResult(string);
+    }
+
     @GetMapping("selectFirstPage")
     public DataResult selectFirstPage() {
         return new SuccessResult(orderRepository.selectFirstPage());
+    }
+
+    @GetMapping("delete/{id}")
+    public DataResult deleteById(@PathVariable Long id) {
+        orderRepository.deleteById(id);
+        return new SuccessResult();
     }
 
     @GetMapping("insert")

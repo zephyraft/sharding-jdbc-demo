@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--suppress SqlNoDataSourceInspection -->
+<!--suppress SqlResolve, SqlNoDataSourceInspection -->
 <mapper namespace="org.zephyr.sharding.repository.OrderRepository">
     <resultMap id="resultMap" type="org.zephyr.sharding.entity.Order">
         <result column="order_id" property="orderId" jdbcType="INTEGER"/>
@@ -10,10 +10,14 @@
 
     <!-- useGeneratedKeys="true"  -->
     <insert id="insert" parameterType="org.zephyr.sharding.entity.Order">
-        INSERT INTO `t_order` (`order_id`, `user_id`, `status`) VALUES (#{orderId}, #{userId}, #{status})
+        INSERT INTO t_order (order_id, user_id, status) VALUES (#{orderId}, #{userId}, #{status})
     </insert>
 
     <select id="selectFirstPage" resultMap="resultMap">
         SELECT * FROM t_order ORDER BY order_id LIMIT 0, 10
     </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM t_order WHERE order_id = #{orderId}
+    </delete>
 </mapper>
