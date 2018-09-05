@@ -6,6 +6,7 @@ import io.shardingsphere.core.api.ShardingDataSourceFactory;
 import io.shardingsphere.core.api.config.ShardingRuleConfiguration;
 import io.shardingsphere.core.api.config.TableRuleConfiguration;
 import io.shardingsphere.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.core.keygen.DefaultKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,6 +32,9 @@ public class ShardingJDBCConfig {
         //按用户id分库
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
                 new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
+        //配置work id
+        DefaultKeyGenerator.setWorkerId(1L);
+        shardingRuleConfig.setDefaultKeyGenerator(new DefaultKeyGenerator());
         return ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig, new HashMap<>(), new Properties());
     }
 
@@ -39,6 +43,7 @@ public class ShardingJDBCConfig {
         result.setLogicTable("t_order");
         //ds${0..1}.t_order${0..1}行表达式 http://shardingsphere.io/document/current/cn/features/sharding/other-features/inline-expression/
         result.setActualDataNodes("ds${0..1}.t_order${0..1}");
+        //order_id自动生成
         result.setKeyGeneratorColumnName("order_id");
         //配置t_order表分表规则
         result.setTableShardingStrategyConfig(

@@ -10,7 +10,7 @@
 
     <!-- useGeneratedKeys="true"  -->
     <insert id="insert" parameterType="org.zephyr.sharding.entity.Order">
-        INSERT INTO t_order (order_id, user_id, status) VALUES (#{orderId}, #{userId}, #{status})
+        INSERT INTO t_order (user_id, status) VALUES (#{userId}, #{status})
     </insert>
 
     <select id="selectFirstPage" resultMap="resultMap">
