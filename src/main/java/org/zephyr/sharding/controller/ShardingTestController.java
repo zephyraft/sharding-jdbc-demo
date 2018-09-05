@@ -13,10 +13,7 @@ import org.zephyr.sharding.common.SuccessResult;
 import org.zephyr.sharding.entity.Order;
 import org.zephyr.sharding.repository.OrderRepository;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by zephyr on 2018/9/4.
@@ -29,12 +26,15 @@ public class ShardingTestController {
 
     private OrderRepository orderRepository;
 
+    private static final int THREAD_NUM = 4 * 2 + 1;
+    private static final ThreadPoolExecutor THREAD_POOL_EXECUTOR =
+            new ThreadPoolExecutor(THREAD_NUM, THREAD_NUM,
+                    0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+
     @Autowired
     public ShardingTestController(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-
-    private static final int THREAD_NUM = 200;
 
     @GetMapping("echo/{string}")
     public DataResult echo(@PathVariable String string) {
@@ -46,9 +46,29 @@ public class ShardingTestController {
         return new SuccessResult(orderRepository.selectFirstPage());
     }
 
+    @GetMapping("select/{id}")
+    public DataResult selectById(@PathVariable Long id) {
+        return new SuccessResult(orderRepository.selectById(id));
+    }
+
     @GetMapping("delete/{id}")
     public DataResult deleteById(@PathVariable Long id) {
         orderRepository.deleteById(id);
+        return new SuccessResult();
+    }
+
+    @GetMapping("update/{id}")
+    public DataResult updateById(@PathVariable Long id) {
+        Order order = orderRepository.selectById(id);
+        order.setOrderId(id);
+        order.setStatus("2");
+        if (order.getUserId() % 2 == 0) {
+            //更改用户id，可以正常切换数据所在的库
+            order.setUserId(1);
+        } else {
+            order.setUserId(2);
+        }
+        orderRepository.updateById(order);
         return new SuccessResult();
     }
 
@@ -59,34 +79,26 @@ public class ShardingTestController {
         // 因此，如果毫秒内并发度不高，最后4位为零的几率则很大。因此并发度不高的应用生成偶数主键的几率会更高。
         DefaultKeyGenerator defaultKeyGenerator = new DefaultKeyGenerator();
 
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(THREAD_NUM);
-
-        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUM);
-        for (int i = 0; i < THREAD_NUM; i++) {
-            executorService.submit(getInsertRunnable(cyclicBarrier, defaultKeyGenerator, i));
+        for (int i = 0; i < 10000; i++) {
+            THREAD_POOL_EXECUTOR.execute(getInsertRunnable(defaultKeyGenerator, i));
         }
         return new SuccessResult();
     }
 
-    private Runnable getInsertRunnable(CyclicBarrier cyclicBarrier, DefaultKeyGenerator defaultKeyGenerator, int i) {
-        return () -> {
-            try {
-                LOGGER.info("await:{}", i);
-                cyclicBarrier.await();
-            } catch (InterruptedException e) {
-                LOGGER.error("", e);
-                Thread.currentThread().interrupt();
-            } catch (BrokenBarrierException e) {
-                LOGGER.error("", e);
-            }
+    @GetMapping("threadPoolActiveCount")
+    public DataResult threadPoolActiveCount() {
+        int num = THREAD_POOL_EXECUTOR.getActiveCount();
+        LOGGER.info("active count: {}", num);
+        return new SuccessResult(num);
+    }
 
-            //同时触发insert，增加并发，使订单分布均匀
+    private Runnable getInsertRunnable(DefaultKeyGenerator defaultKeyGenerator, int i) {
+        return () -> {
             Order order = new Order();
             order.setOrderId(defaultKeyGenerator.generateKey().longValue());
             order.setUserId(i % 2 + 1);
             order.setStatus("1");
             orderRepository.insert(order);
-            LOGGER.info("finish:{}", i);
         };
     }
 }

@@ -1,5 +1,6 @@
 package org.zephyr.sharding.repository;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.zephyr.sharding.entity.Order;
 
@@ -11,9 +12,13 @@ import java.util.List;
 @Repository
 public interface OrderRepository {
 
-    void insert(Order model);
+    void insert(Order order);
 
     List<Order> selectFirstPage();
 
-    void deleteById(Long orderId);
+    Order selectById(@Param("orderId") Long orderId);
+
+    void deleteById(@Param("orderId") Long orderId);
+
+    void updateById(Order order);
 }

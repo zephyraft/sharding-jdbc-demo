@@ -6,25 +6,25 @@ package org.zephyr.sharding.entity;
 @SuppressWarnings("unused")
 public class Order {
 
-    private long orderId;
+    private Long orderId;
 
-    private int userId;
+    private Integer userId;
 
     private String status;
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

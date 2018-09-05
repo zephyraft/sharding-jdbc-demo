@@ -17,7 +17,15 @@
         SELECT * FROM t_order ORDER BY order_id LIMIT 0, 10
     </select>
 
+    <select id="selectById" parameterType="java.lang.Long" resultMap="resultMap">
+        SELECT * FROM t_order WHERE order_id = ${orderId}
+    </select>
+
     <delete id="deleteById" parameterType="java.lang.Long">
         DELETE FROM t_order WHERE order_id = #{orderId}
     </delete>
+
+    <update id="updateById" parameterType="org.zephyr.sharding.entity.Order">
+        UPDATE t_order SET user_id = ${userId}, status = ${status} WHERE order_id = #{orderId}
+    </update>
 </mapper>
