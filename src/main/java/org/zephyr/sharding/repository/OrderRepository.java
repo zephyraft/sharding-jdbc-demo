@@ -1,7 +1,9 @@
-package org.zephyr.shardingjdbc.dao;
+package org.zephyr.sharding.repository;
 
 import org.springframework.stereotype.Repository;
-import org.zephyr.shardingjdbc.model.Order;
+import org.zephyr.sharding.entity.Order;
+
+import java.util.List;
 
 /**
  * Created by zephyr on 2018/9/4.
@@ -11,4 +13,5 @@ public interface OrderRepository {
 
     Long insert(Order model);
 
+    List<Order> selectFirstPage();
 }

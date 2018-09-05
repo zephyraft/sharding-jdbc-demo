@@ -1,23 +1,15 @@
-package org.zephyr.shardingjdbc.model;
+package org.zephyr.sharding.entity;
 
 /**
  * Created by zephyr on 2018/9/4.
  */
-public class OrderItem {
-
-    private long orderItemId;
+public class Order {
 
     private long orderId;
 
     private int userId;
 
-    public long getOrderItemId() {
-        return orderItemId;
-    }
-
-    public void setOrderItemId(long orderItemId) {
-        this.orderItemId = orderItemId;
-    }
+    private String status;
 
     public long getOrderId() {
         return orderId;
@@ -33,5 +25,13 @@ public class OrderItem {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

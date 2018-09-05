@@ -1,8 +1,8 @@
-package org.zephyr.shardingjdbc.dao;
+package org.zephyr.sharding.repository;
 
 import org.springframework.stereotype.Repository;
-import org.zephyr.shardingjdbc.model.Order;
-import org.zephyr.shardingjdbc.model.OrderItem;
+import org.zephyr.sharding.entity.Order;
+import org.zephyr.sharding.entity.OrderItem;
 
 import java.util.List;
 

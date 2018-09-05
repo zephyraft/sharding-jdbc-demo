@@ -1,4 +1,4 @@
-package org.zephyr.shardingjdbc.config;
+package org.zephyr.sharding.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mysql.cj.jdbc.Driver;
