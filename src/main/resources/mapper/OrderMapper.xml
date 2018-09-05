@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection -->
+<mapper namespace="org.zephyr.shardingjdbc.dao.OrderRepository">
+    <!--<resultMap id="baseResultMap" type="org.zephyr.shardingjdbc.model.Order">-->
+        <!--<result column="order_id" property="orderId" jdbcType="INTEGER"/>-->
+        <!--<result column="user_id" property="userId" jdbcType="INTEGER"/>-->
+        <!--<result column="status" property="status" jdbcType="VARCHAR"/>-->
+    <!--</resultMap>-->
+
+    <!-- useGeneratedKeys="true"  -->
+    <insert id="insert" parameterType="org.zephyr.shardingjdbc.model.Order">
+        INSERT INTO `t_order` (`user_id`, `status`, `order_id`) VALUES (#{userId}, #{status}, #{orderId})
+    </insert>
+</mapper>
