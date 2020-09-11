@@ -10,12 +10,12 @@ public class ConsistentHashingWithVirtualNode implements ConsistentHashing{
     /**
      * 真实结点列表,考虑到服务器上线、下线的场景，即添加、删除的场景会比较频繁，这里使用LinkedList会更好
      */
-    private static List<String> realNodes = new LinkedList<>();
+    private static final List<String> realNodes = new LinkedList<>();
 
     /**
      * 虚拟节点，key表示虚拟节点的hash值，value表示虚拟节点的名称
      */
-    private static SortedMap<Integer, String> virtualNodes = new TreeMap<>();
+    private static final SortedMap<Integer, String> virtualNodes = new TreeMap<>();
 
     /**
      * 虚拟节点的数目，这里写死，为了演示需要，一个真实结点对应5个虚拟节点

@@ -2,7 +2,6 @@ package org.zephyr.sharding.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +24,13 @@ public class ShardingTestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShardingTestController.class);
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     private static final int THREAD_NUM = 4 * 2 + 1;
     private static final ThreadPoolExecutor THREAD_POOL_EXECUTOR =
             new ThreadPoolExecutor(THREAD_NUM, THREAD_NUM,
                     0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
-    @Autowired
     public ShardingTestController(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }

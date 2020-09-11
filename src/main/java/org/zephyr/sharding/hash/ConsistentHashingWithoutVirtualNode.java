@@ -12,7 +12,7 @@ public class ConsistentHashingWithoutVirtualNode implements ConsistentHashing{
     /**
      * key表示服务器的hash值，value表示服务器的名称
      */
-    private static SortedMap<Integer, String> sortedMap = new TreeMap<>();
+    private static final SortedMap<Integer, String> sortedMap = new TreeMap<>();
 
     public void initServer(String[] servers) {
         //程序初始化，将所有的服务器放入sortedMap中
